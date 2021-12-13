@@ -1,0 +1,41 @@
+version: '3.2'
+
+services:
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./config/hosts:/etc/nginx/conf.d
+            - ./data/www:/var/www
+            - ./data/logs:/var/log/nginx
+        links:
+            - php
+
+    php:
+        build: 
+            context: ./
+            dockerfile: ./images/Dockerfile.php
+        links:
+            - mysql
+        volumes:
+            - ./data/www:/var/www
+
+    mysql:
+        image: mysql:8
+        ports:
+            - "3306:3306"
+        command: >
+          bash -c "
+          chmod 644 /etc/mysql/conf.d/mysql.cnf
+          && /entrypoint.sh mysqld
+          "
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+            - ./config/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+        environment:
+            MYSQL_USER: "admin"
+            MYSQL_PASSWORD: "QLuVNs573e2U"
+            MYSQL_DATABASE: "test"
+            MYSQL_ROOT_PASSWORD: "wcCFPvTybe4w"
