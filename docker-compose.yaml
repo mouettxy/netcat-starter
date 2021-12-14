@@ -34,6 +34,7 @@ services:
           && /entrypoint.sh mysqld
           "
         volumes:
+            - ./data/logs:/var/log
             - ./data/mysql:/var/lib/mysql
             - ./config/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
         environment:
