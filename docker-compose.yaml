@@ -33,6 +33,8 @@ services:
           chmod 644 /etc/mysql/conf.d/mysql.cnf
           && /entrypoint.sh mysqld
           "
+        cap_add:
+            - SYS_NICE
         volumes:
             - ./data/logs:/var/log
             - ./data/mysql:/var/lib/mysql
